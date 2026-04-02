@@ -1,0 +1,6 @@
+# This file doesn't need to be changed. It's the same for everyone
+host: postgres
+database: capstone
+user: postgres
+password: postgres
+port: 5432
