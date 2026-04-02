@@ -1,6 +1,6 @@
 import unittest
-from src.tle import *
-from src.db_utils import *
+from src.db.tle import *
+from src.db.db_utils import *
 
 class TestTLE(unittest.TestCase):
 

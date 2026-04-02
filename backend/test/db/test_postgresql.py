@@ -1,5 +1,5 @@
 import unittest
-from src.db_utils import exec_get_one, connect
+from src.db.db_utils import exec_get_one, connect
 
 class TestPostgreSQL(unittest.TestCase):
 
