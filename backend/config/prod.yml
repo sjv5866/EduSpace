@@ -1,4 +1,4 @@
-# This file doesn't need to be changed. It's the same for everyone
+# Potential database configuration for prod environment
 host: postgres
 database: capstone
 user: postgres
