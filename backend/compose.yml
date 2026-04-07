@@ -4,12 +4,19 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    volumes:
+      - ./src:/app/src
+      - ./config:/app/config
     ports:
       - "5000:5000"
     depends_on:
       - db 
     environment:
-      - DATABASE_URL=postgresql://cadet:0Space!@db/cadet
+      POSTGRES_USER: cadet
+      POSTGRES_PASSWORD: 0Space!
+      POSTGRES_HOST: db     # This is the name of the database service in this file above
+      POSTGRES_PORT: 5432
+      POSTGRES_DB: cadet
   db:
     image: postgres:latest
     container_name: cadet-postgres-container
