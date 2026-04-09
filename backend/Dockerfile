@@ -2,6 +2,7 @@ FROM python:3.12
 
 RUN mkdir -p /app/src
 COPY . /app/src
+COPY /schema /app/schema
 WORKDIR /app/src
 EXPOSE 5000
 RUN pip install -r requirements.txt
