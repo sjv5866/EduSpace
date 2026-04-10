@@ -144,3 +144,7 @@ venv/*
 # flask setup
 *.pyc
 **/db.yml
+
+# EduSpace Configuration files
+backend/servers.json
+backend/config
