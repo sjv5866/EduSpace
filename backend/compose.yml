@@ -11,14 +11,15 @@ services:
     ports:
       - "5000:5000"
     depends_on:
-      - db 
+      postgres:
+        condition: service_healthy
     environment:
       POSTGRES_USER: cadet
       POSTGRES_PASSWORD: 0Space!
       POSTGRES_HOST: db     # This is the name of the database service in this file above
       POSTGRES_PORT: 5432
       POSTGRES_DB: cadet
-  db:
+  postgres:
     image: postgres:latest
     container_name: cadet-postgres-container
     restart: always
@@ -28,8 +29,15 @@ services:
       POSTGRES_USER: cadet
       POSTGRES_PASSWORD: 0Space!
       POSTGRES_DB: cadet
+      PGUSER: "cadet"
     volumes:
       - postgres:/var/lib/postgres/docker
+    healthcheck:
+      #CHANGE 1: this command checks if the database is ready, right on the source db server
+      test: [ "CMD-SHELL", "pg_isready" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
   pgadmin:
     image: dpage/pgadmin4
     container_name: cadet-pgadmin-container
@@ -46,6 +54,9 @@ services:
     volumes:
       - pgadmin4:/var/lib/pgadmin/docker
       - ./servers.json:/pgadmin4/servers.json
+    depends_on:
+      postgres:
+        condition: service_healthy
 volumes:
   postgres:
   pgadmin4:

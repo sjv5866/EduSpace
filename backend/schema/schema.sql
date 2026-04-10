@@ -11,3 +11,9 @@ CREATE TABLE IF NOT EXISTS tles (
     inserted_at TIMESTAMP DEFAULT NOW(),
     UNIQUE(satellite_id, epoch)
 );
+
+INSERT INTO tles(id, satellite_id, satellite_name, line1, line2, epoch)
+VALUES (1, 1, 'TEST', 'LINE 1', 'LINE 2', NOW())
+ON CONFLICT(id)
+DO UPDATE SET 
+    epoch = NOW();
