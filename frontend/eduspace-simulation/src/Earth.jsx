@@ -20,8 +20,7 @@ export default function Earth(props) {
   return (
   <mesh {...props} ref={ref} scale={[2, 2, 2]}>
     <sphereGeometry args={[1, earthTriangles, earthTriangles]} />
-    <meshStandardMaterial attach="material" roughness={0.7}
-          metalness={0.05} dithering={true}>
+    <meshStandardMaterial attach="material" dithering={true}>
       <primitive attach="map" object={texture} />
     </meshStandardMaterial>
   </mesh>
