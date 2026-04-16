@@ -1,28 +1,21 @@
 import React, { useRef } from "react";
-import { Canvas, useFrame } from "@react-three/fiber";
-import { Box, OrbitControls } from "@react-three/drei";
-
-const Scene = () => {
-  const boxRef = useRef();
-  useFrame((state, delta) => {
-    boxRef.current.rotation.y += 0.02;
-  });
-
-  return (
-    <>
-      <Box ref={boxRef} args={[1, 1, 1]} rotation={[0.5, 0, 0]}>
-        <meshNormalMaterial />
-      </Box>
-      <ambientLight />
-    </>
-  );
-};
+import { Canvas } from "@react-three/fiber";
+import Earth from './Earth';
+import { Stats, OrbitControls } from '@react-three/drei';
 
 const App = () => {
   return (
-    <Canvas camera={{ fov: 70, position: [0, 0, 3] }}>
-      <OrbitControls />
-      <Scene />
+    <Canvas camera={{ position: [0, 0, 8.5], fov: 40 }} style={{
+      width: "100%",
+      height: "100vh",
+      objectFit: "cover",
+      backgroundImage: "url('./2k_stars.webp')",
+      backgroundSize: "cover",
+    }}>
+      <ambientLight intensity={0.4} color="#fceaff" />
+      <Earth position={[0, -0.1, 0]} />
+      <OrbitControls enablePan={false} enableDamping={false}/>
+      <Stats />
     </Canvas>
   );
 };
