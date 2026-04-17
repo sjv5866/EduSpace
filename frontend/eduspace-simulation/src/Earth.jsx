@@ -1,5 +1,6 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useFrame } from '@react-three/fiber';
+import Ecliptic from './Ecliptic';
 import * as THREE from 'three';
 
 export default function Earth(props) {
@@ -18,11 +19,14 @@ export default function Earth(props) {
   })
 
   return (
-  <mesh {...props} ref={ref} scale={[2, 2, 2]}>
-    <sphereGeometry args={[1, earthTriangles, earthTriangles]} />
-    <meshStandardMaterial attach="material" dithering={true}>
-      <primitive attach="map" object={texture} />
-    </meshStandardMaterial>
-  </mesh>
+    <>
+    <mesh {...props} ref={ref} scale={[2, 2, 2]}>
+      <sphereGeometry args={[1, earthTriangles, earthTriangles]} />
+      <meshStandardMaterial attach="material" dithering={true}>
+        <primitive attach="map" object={texture} />
+      </meshStandardMaterial>
+    </mesh>
+    <Ecliptic radius={3.5} speed={0.5}/>
+    </>
   );
 }
