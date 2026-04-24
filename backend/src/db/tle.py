@@ -1,15 +1,14 @@
 from .db_utils import exec_get_all
 from typing import Optional, Iterable, Dict, Tuple, Any
 
-def tupleToTLE(tle: Tuple[int, int, str, str, str, Any, str, Any]) -> Dict[str, Any]:
-  id, satelliteId, name, line1, line2, epoch, source, inserted = tle
+def tupleToTLE(tle: Tuple[int, int, str, str, str, Any]) -> Dict[str, Any]:
+  id, satelliteId, name, line1, line2, source, inserted = tle
   return {
     "id": id,
     "satelliteId": satelliteId,
     "name": name,
     "line1": line1,
     "line2": line2,
-    "epoch": str(epoch),
     "source": source,
     "inserted": str(inserted),
   }

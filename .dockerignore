@@ -1,0 +1,16 @@
+node_modules/
+dist/
+out/
+.tmp/
+.cache/
+.vite/
+.vitepress/
+.eslintcache
+.npm/
+coverage/
+jest/
+cypress/
+cypress/screenshots/
+cypress/videos/
+reports/
+npm-debug.log*

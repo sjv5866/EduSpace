@@ -1,31 +1,40 @@
 services:
+  frontend:
+    container_name: cadet-frontend
+    build:
+      context: ./frontend/eduspace-simulation
+      dockerfile: Dockerfile
+    ports:
+      - 5173:5173
+    depends_on:
+      - flask
   postgres:
-      image: postgres:latest
-      container_name: cadet-postgres-container
-      restart: always
-      ports:
-        - "5432:5432"
-      environment:
-        POSTGRES_USER: ${DB_USER}
-        POSTGRES_PASSWORD: ${DB_PASSWORD}
-        POSTGRES_DB: cadet
-        PGUSER: "${DB_USER}"
-      volumes:
-        - postgres:/var/lib/postgres/docker
-      healthcheck:
-        test: [ "CMD-SHELL", "pg_isready" ]
-        interval: 5s
-        timeout: 5s
-        retries: 5
+    image: postgres:latest
+    container_name: cadet-postgres-container
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: cadet
+      PGUSER: "${DB_USER}"
+    volumes:
+      - postgres:/var/lib/postgres/docker
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
   flask:
     container_name: cadet-flask-container
     build:
-      context: .
+      context: ./backend
       dockerfile: Dockerfile
     volumes:
-      - ./src:/app/src
-      - ./config:/app/config
-      - ./schema:/app/schema
+      - ./backend/src:/app/src
+      - ./backend/config:/app/config
+      - ./backend/schema:/app/schema
     ports:
       - "5000:5000"
     depends_on:
@@ -52,7 +61,7 @@ services:
       POSTGRES_DB: cadet
     volumes:
       - pgadmin4:/var/lib/pgadmin/docker
-      - ./servers.json:/pgadmin4/servers.json
+      - ./backend/servers.json:/pgadmin4/servers.json
     depends_on:
       postgres:
         condition: service_healthy

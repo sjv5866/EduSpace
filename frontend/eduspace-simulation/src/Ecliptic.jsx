@@ -4,6 +4,7 @@ import * as THREE from 'three';
 
 export default function Ecliptic({ radius = 2, speed = 1 }) {
   const pointRef = useRef();
+  const lastCall = useRef(0);
 
   useFrame((state, delta) => {
     if (pointRef.current) {
@@ -13,6 +14,13 @@ export default function Ecliptic({ radius = 2, speed = 1 }) {
          * 2. change radius of rotation with respect to TLE via skyfield sgp4 feature.
          * 3. keep speed static or toggle with scrollbar in menu
          */
+        const now = Date.now();
+        if (now - lastCall.current > 5000) {
+          lastCall.current = now;
+          fetch('http:localhost:5000/manage/init').then(res => {
+            console.log(res)
+          });
+        }
 
         // simple orbit example wrt time
         const time = state.clock.elapsedTime * speed;
