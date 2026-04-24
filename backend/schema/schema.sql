@@ -6,14 +6,13 @@ CREATE TABLE IF NOT EXISTS tles (
     satellite_name VARCHAR(100),
     line1 TEXT NOT NULL,
     line2 TEXT NOT NULL,
-    epoch TIMESTAMP NOT NULL,
-    source VARCHAR(50) DEFAULT 'Space-Track',
+    source VARCHAR(50) DEFAULT 'TEST',
     inserted_at TIMESTAMP DEFAULT NOW(),
-    UNIQUE(satellite_id, epoch)
+    UNIQUE(satellite_id)
 );
 
-INSERT INTO tles(id, satellite_id, satellite_name, line1, line2, epoch)
-VALUES (1, 1, 'TEST', 'LINE 1', 'LINE 2', NOW())
-ON CONFLICT(id)
+INSERT INTO tles(satellite_id, satellite_name, line1, line2)
+VALUES (1, 'TEST', 'LINE 1', 'LINE 2')
+ON CONFLICT(satellite_id)
 DO UPDATE SET 
-    epoch = NOW();
+    inserted_at = NOW();
