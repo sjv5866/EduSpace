@@ -8,25 +8,19 @@ export default function Ecliptic({ radius = 2, speed = 1 }) {
 
   useFrame((state, delta) => {
     if (pointRef.current) {
-        /** 
-         * Next Steps
-         * 1. grab x,y,z position from API HERE. Or from a service class
-         * 2. change radius of rotation with respect to TLE via skyfield sgp4 feature.
-         * 3. keep speed static or toggle with scrollbar in menu
-         */
         const now = Date.now();
-        if (now - lastCall.current > 5000) {
+        if (now - lastCall.current > 1000) {
           lastCall.current = now;
-          fetch('http:localhost:5000/manage/init').then(res => {
-            console.log(res)
-          });
+          fetch('http://localhost:5000/tles/pos/POISK')
+            .then(res => res.json())
+            .then(data => {
+              console.log(data);
+              pointRef.current.position.x = data.x;
+              pointRef.current.position.y = data.y;
+              pointRef.current.position.z = data.z;
+            });
         }
-
-        // simple orbit example wrt time
-        const time = state.clock.elapsedTime * speed;
-        pointRef.current.position.x = Math.cos(time) * radius;
-        pointRef.current.position.z = Math.sin(time) * radius;
-        pointRef.current.position.y = 0;
+        
     }
   });
 
