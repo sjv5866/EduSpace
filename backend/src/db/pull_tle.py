@@ -1,8 +1,13 @@
-from .db_utils import exec_commit
+from .tle import insert_tle, get_tle_by_name
 from skyfield.api import load, EarthSatellite
 from sgp4 import exporter
+from datetime import timedelta
+from typing import Optional, Iterable, Dict, Tuple, Any
 
 def propagate_tles() -> None:
+    """
+    Calls CelesTrak API and pushes recent TLE data to database
+    """
 
     url = 'http://celestrak.com/NORAD/elements/stations.txt'
 
@@ -24,13 +29,32 @@ def propagate_tles() -> None:
             "source": 'CelesTrak'
         }
 
-        insert_sql = """
-            INSERT INTO tles(satellite_id, satellite_name, line1, line2, source)
-            VALUES (%(sat_id)s, %(sat_name)s, %(line_1)s, %(line_2)s, %(source)s)
-            ON CONFLICT(satellite_id)
-            DO UPDATE SET 
-                inserted_at = NOW();
-        """
-        exec_commit(insert_sql, tle_dict)
+        insert_tle(tle_dict)
+        print(convert_tle_to_coords(satellite.name))
 
     print("Insertion Complete")
+
+def convert_tle_to_coords(sat_name: str) -> dict[str, Any]:
+    """
+    Converts satellite entity into a Three-point cartesian coordinate for the frontend
+
+    Parameters:
+    - sat_name: name of satellite to convert
+
+    Returns: dictionary representation of cartesian coordinate
+    """
+
+    # setup satellite
+    ts = load.timescale()
+    sat_dict = get_tle_by_name(sat_name)
+    satellite = EarthSatellite(sat_dict['line1'], sat_dict['line2'], sat_dict['name'], ts)
+
+    # get geocentric location of satellite
+    x, y, z = list(map(float, satellite.at(ts.now()).xyz.km))
+
+    # sanitize to threejs coordinates (in meters)
+    return {
+        "x": x / 1000,
+        "y": y / 1000,
+        "z": z / 1000,
+    }

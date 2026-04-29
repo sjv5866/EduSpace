@@ -15,18 +15,24 @@ export default function Ecliptic({ radius = 2, speed = 1 }) {
          * 3. keep speed static or toggle with scrollbar in menu
          */
         const now = Date.now();
-        if (now - lastCall.current > 5000) {
+        if (now - lastCall.current > 1000) {
           lastCall.current = now;
-          fetch('http:localhost:5000/manage/init').then(res => {
-            console.log(res)
-          });
+          fetch('http:localhost:5000/tles/pos/POISK')
+            .then(res => {
+              console.log(res);
+              return res.json();
+            })
+            .then(json => {
+              console.log(json);
+              pointRef.current.position.x = json.x;
+              pointRef.current.position.y = json.y;
+              pointRef.current.position.z = json.z;
+            });
         }
 
         // simple orbit example wrt time
-        const time = state.clock.elapsedTime * speed;
-        pointRef.current.position.x = Math.cos(time) * radius;
-        pointRef.current.position.z = Math.sin(time) * radius;
-        pointRef.current.position.y = 0;
+        // const time = state.clock.elapsedTime * speed;
+        
     }
   });
 
