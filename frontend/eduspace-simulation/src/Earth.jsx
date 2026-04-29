@@ -1,6 +1,6 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useFrame } from '@react-three/fiber';
-import Ecliptic from './Ecliptic';
+import Satellite from './Satellite';
 import * as THREE from 'three';
 
 export default function Earth(props) {
@@ -15,7 +15,7 @@ export default function Earth(props) {
   })
 
   useFrame((_, delta) => {
-    ref.current.rotation.y += 0.5 * delta * rotate
+    ref.current.rotation.y += 0.01 * delta * rotate
   })
 
   return (
@@ -26,7 +26,7 @@ export default function Earth(props) {
         <primitive attach="map" object={texture} />
       </meshStandardMaterial>
     </mesh>
-    <Ecliptic radius={3.5} speed={0.5}/>
+    <Satellite name={"POISK"}/>
     </>
   );
 }

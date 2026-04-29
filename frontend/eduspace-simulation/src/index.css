@@ -5,3 +5,25 @@ body,
   margin: 0;
   background: #000000;
 }
+
+.title {
+  position: absolute;
+  left: 20px;
+  top: 10px;
+}
+
+.title h1 {
+  color: white;
+  margin: 0;
+}
+
+.tleGrid {
+  position: absolute;
+  right: 20px;
+  top: 10px;
+}
+
+.tleGrid h3 {
+  margin: 0;
+  color: white;
+}
