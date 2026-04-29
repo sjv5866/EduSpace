@@ -6,15 +6,15 @@ from db.pull_tle import convert_tle_to_coords
 
 class TLEList(Resource):
     def get(self):
-        return jsonify(list_tles()), 200
+        return list_tles()
     
 class TLE(Resource):
     def get(self, sat_name):
-        return jsonify(get_tle_by_name(sat_name)), 200
+        return get_tle_by_name(sat_name)
     
 class TLEPosition(Resource):
     def get(self, sat_name):
-        return jsonify(convert_tle_to_coords(sat_name)), 200
+        return convert_tle_to_coords(sat_name)
 
 class Version(Resource):
     def get(self):
