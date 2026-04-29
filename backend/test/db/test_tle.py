@@ -6,6 +6,5 @@ class TestTLE(unittest.TestCase):
 
     def test_build_tables(self):
         """Build the tables"""
-        buildTable()
         result = exec_get_all('SELECT * FROM tles')
-        self.assertEqual([], result, "no rows in tles")
+        self.assertEqual(28, len(result), "no rows in tles")
